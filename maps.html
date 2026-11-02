@@ -181,13 +181,13 @@
           <div>
             <p class="eyebrow">01 · Bloomberg News · 2025</p>
             <h2><a href="https://www.bloomberg.com/graphics/2026-swiss-glacier-collapse-risk/">The Swiss Alps Reckon With the Threat of Collapsing Glaciers</a></h2>
-            <p class="summary">An interactive 3D recreation of the 2025 Blatten glacier collapse, built from satellite imagery and Swiss elevation data. I storyboarded the sequence and modeled the terrain in Blender; a senior developer then helped me move the workflow to Threlte so the scene renders live as readers scroll. It was the department’s first Threlte story, paired with a static map of at-risk glaciers across the Alps.</p>
+            <p class="summary">An interactive 3D recreation of the 2025 Blatten glacier collapse, built from multiple raster and vector data sources. I storyboarded the sequence and modeled the terrain in Blender.</p>
           </div>
           <a class="story-link" href="https://www.bloomberg.com/graphics/2026-swiss-glacier-collapse-risk/">Read the story <span aria-hidden="true">→</span></a>
         </div>
         <div class="figs">
           <figure>
-            <div class="frame" data-src="img/maps/web/blatten-recording.mp4" data-poster="img/maps/web/blatten-recording-poster.jpg" style="--ar: 1280 / 848">
+            <div class="frame" data-src="img/maps/web/blatten-recording.mp4" data-poster="img/maps/web/blatten-recording-poster.jpg" style="--ar: 1280 / 904">
               <div class="ph"><strong>3D scroll recording</strong><code>img/maps/web/blatten-recording.mp4</code></div>
             </div>
             <figcaption>The 3D scroll: the Birch glacier above Blatten gives way, rendered live in the browser with Threlte.</figcaption>
@@ -205,13 +205,13 @@
             <div class="frame" data-src="img/maps/web/blatten-blender-2.jpg" style="--ar: 822 / 928">
               <div class="ph"><strong>Imagery import</strong><code>blatten-blender-2.jpg</code></div>
             </div>
-            <figcaption><b>2</b> Draping satellite imagery with BlenderGIS.</figcaption>
+            <figcaption><b>2</b> Draping satellite imagery over DEM mesh.</figcaption>
           </figure>
           <figure style="flex-grow: 1.478">
             <div class="frame" data-src="img/maps/web/blatten-blender-3.jpg" style="--ar: 1360 / 920">
               <div class="ph"><strong>Textured terrain</strong><code>blatten-blender-3.jpg</code></div>
             </div>
-            <figcaption><b>3</b> Textured terrain with the Birch glacier highlighted.</figcaption>
+            <figcaption><b>3</b> Rendered terrain with the Birch glacier highlighted.</figcaption>
           </figure>
         </div>
         <div class="figs" style="margin-top: 28px">
@@ -219,7 +219,7 @@
             <div class="frame" data-src="img/maps/web/blatten-valley.mp4" data-poster="img/maps/web/blatten-valley-poster.jpg" style="--ar: 1280 / 848">
               <div class="ph"><strong>Static map scroll</strong><code>img/maps/web/blatten-valley.mp4</code></div>
             </div>
-            <figcaption>The companion static map: at-risk glaciers, past glacier incidents and nearby towns and ski areas across the Swiss Alps.</figcaption>
+            <figcaption>A companion static map of at-risk glaciers and glacier incidents across the Swiss Alps.</figcaption>
           </figure>
         </div>
         <dl class="meta">
@@ -235,28 +235,22 @@
           <div>
             <p class="eyebrow">02 · Bloomberg News · Sept. 8, 2026</p>
             <h2><a href="https://www.bloomberg.com/graphics/2026-reservoir-levels-drought/">The US Is Losing Its Ability to Store Water When It Needs It Most</a></h2>
-            <p class="summary">Maps of shrinking reservoir storage across the US, joining the National Inventory of Dams with federal sedimentation surveys, HydroSHEDS flow direction and wildfire perimeters. Data processing and prototyping were sped up with LLM-assisted workflows.</p>
+            <p class="summary">Map of federal dams and various shrinking reservoir storage across the US.</p>
           </div>
           <a class="story-link" href="https://www.bloomberg.com/graphics/2026-reservoir-levels-drought/">Read the story <span aria-hidden="true">→</span></a>
         </div>
-        <div class="figs one-two">
-          <figure>
-            <div class="frame" data-src="img/maps/reservoir-map.png" style="--ar: 16 / 9">
-              <div class="ph"><strong>Main map</strong><code>img/maps/reservoir-map.png</code></div>
+        <div class="row-eq">
+          <figure style="flex-grow: 1.416">
+            <div class="frame" data-src="img/maps/web/dam-sediment.mp4" data-poster="img/maps/web/dam-sediment-poster.jpg" style="--ar: 1280 / 904">
+              <div class="ph"><strong>US reservoir sedimentation map</strong><code>dam-sediment.mp4</code></div>
             </div>
-            <figcaption>Caption for the main reservoir map.</figcaption>
+            <figcaption>Reservoirs from the National Inventory of Dams, sized by capacity, with the few that have sedimentation surveys highlighted.</figcaption>
           </figure>
-          <figure>
-            <div class="frame" data-src="img/maps/reservoir-map-02.png" style="--ar: 4 / 3">
-              <div class="ph"><strong>Detail map</strong><code>img/maps/reservoir-map-02.png</code></div>
+          <figure style="flex-grow: 1.059">
+            <div class="frame" data-src="img/maps/web/dam-sedimentation-wildfires.jpg" style="--ar: 1230 / 1162">
+              <div class="ph"><strong>Strontia Springs Reservoir wildfire map</strong><code>dam-sedimentation-wildfires.jpg</code></div>
             </div>
-            <figcaption>Caption for a detail map, e.g. a watershed with wildfire perimeters.</figcaption>
-          </figure>
-          <figure>
-            <div class="frame" data-src="img/maps/reservoir-map-03.png" style="--ar: 4 / 3">
-              <div class="ph"><strong>Second detail or mobile view</strong><code>img/maps/reservoir-map-03.png</code></div>
-            </div>
-            <figcaption>Caption for a second detail or the mobile layout.</figcaption>
+            <figcaption>Burn scars from five wildfires since 1996 upstream of Colorado’s Strontia Springs Reservoir, and the drainage that carried debris into it.</figcaption>
           </figure>
         </div>
         <dl class="meta">
@@ -272,22 +266,30 @@
           <div>
             <p class="eyebrow">03 · Bloomberg News · Sept. 23, 2024</p>
             <h2><a href="http://bloomberg.com/graphics/2024-underground-wildfires/">Climate Change Is So Bad, Even the Arctic Is On Fire</a></h2>
-            <p class="summary">Maps of wildfire activity across the Arctic, built from NASA FIRMS satellite fire detections and Copernicus fire-emissions data, designed to read from mobile to desktop.</p>
+            <p class="summary">Maps of wildfire activity across the Arctic and the Pantanal, the world's largest tropical wetland.</p>
           </div>
           <a class="story-link" href="http://bloomberg.com/graphics/2024-underground-wildfires/">Read the story <span aria-hidden="true">→</span></a>
         </div>
-        <div class="row-eq">
+        <div class="figs">
+          <figure>
+            <div class="frame" data-src="img/maps/web/arctic-wildfire-pantanal.mp4" data-poster="img/maps/web/arctic-wildfire-pantanal-poster.jpg" style="--ar: 1280 / 904">
+              <div class="ph"><strong>Pantanal fire season</strong><code>arctic-wildfire-pantanal.mp4</code></div>
+            </div>
+            <figcaption>The 2024 fire season in the Pantanal, building up from satellite fire detections alongside a 7-day average.</figcaption>
+          </figure>
+        </div>
+        <div class="row-eq" style="margin-top: 28px">
           <figure style="flex-grow: 1.118">
             <div class="frame" data-src="img/maps/web/arctic-wildfire.jpg" style="--ar: 1970 / 1762">
               <div class="ph"><strong>Arctic wildfire map</strong><code>arctic-wildfire.jpg</code></div>
             </div>
             <figcaption>2024 wildfires across Arctic and subarctic tundra and boreal forest.</figcaption>
           </figure>
-          <figure style="flex-grow: 1.416">
-            <div class="frame" data-src="img/maps/web/arctic-wildfire-pantanal.mp4" data-poster="img/maps/web/arctic-wildfire-pantanal-poster.jpg" style="--ar: 1280 / 904">
-              <div class="ph"><strong>Pantanal fire season</strong><code>arctic-wildfire-pantanal.mp4</code></div>
+          <figure style="flex-grow: 1.216">
+            <div class="frame" data-src="img/maps/web/arctic-wildfire-map2.jpg" style="--ar: 2000 / 1645">
+              <div class="ph"><strong>Projected permafrost extent map</strong><code>arctic-wildfire-map2.jpg</code></div>
             </div>
-            <figcaption>The 2024 fire season in the Pantanal, building up from satellite fire detections alongside a 7-day average.</figcaption>
+            <figcaption>Projected permafrost extent under a high-emissions scenario through 2080; darker areas hold more organic carbon in the soil.</figcaption>
           </figure>
         </div>
         <dl class="meta">
@@ -307,15 +309,15 @@
           </div>
           <a class="story-link" href="https://www.bloomberg.com/graphics/2024-snow-drought-climate-change/">Read the story <span aria-hidden="true">→</span></a>
         </div>
-        <div class="row-eq">
-          <figure style="flex-grow: 1.509">
+        <div class="figs" style="gap: 28px">
+          <figure>
             <div class="frame" data-src="img/maps/web/snowdrought.mp4" data-poster="img/maps/web/snowdrought-poster.jpg" style="--ar: 1280 / 848">
               <div class="ph"><strong>Snow cover animation</strong><code>snowdrought.mp4</code></div>
             </div>
             <figcaption>Monthly snow coverage across the Northern Hemisphere through the 2022–23 winter.</figcaption>
           </figure>
-          <figure style="flex-grow: 1.217">
-            <div class="frame" data-src="img/maps/web/snowdrought-static-map.jpg" style="--ar: 2000 / 1644">
+          <figure>
+            <div class="frame" data-src="img/maps/web/snowdrought-static-map.jpg" style="--ar: 2000 / 1642">
               <div class="ph"><strong>Upper Feather River map</strong><code>snowdrought-static-map.jpg</code></div>
             </div>
             <figcaption>Wildfires since 2000 and tree loss in the Upper Feather River Watershed, which feeds Lake Oroville.</figcaption>
