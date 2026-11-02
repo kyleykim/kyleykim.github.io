@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Resume · Kyle Kim</title>
+  <meta name="description" content="Resume of Kyle Kim, graphics reporter at Bloomberg News: data visualization, maps, design and code.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;600;700&family=Lora:wght@400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #F5F3EC;
+      --paper: #FBFAF6;
+      --ink: #141413;
+      --body: #3D3D3A;
+      --muted: #73726C;
+      --rule: #DDD7CA;
+      --accent: #C2643F;
+      --serif: "Lora", Georgia, "Times New Roman", serif;
+      --sans: "Lato", "Helvetica Neue", Arial, sans-serif;
+      --gutter: clamp(16px, 4vw, 48px);
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body { margin: 0; background: var(--bg); color: var(--body); font: 400 15px/1.5 var(--sans); -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration-color: var(--rule); text-underline-offset: 3px; }
+    a:hover { text-decoration-color: var(--accent); }
+
+    /* ---- site bar ---- */
+    .bar {
+      max-width: 940px; margin: 0 auto; padding: 22px var(--gutter);
+      display: flex; justify-content: space-between; align-items: center; gap: 16px;
+    }
+    .home { font: 400 20px/1 var(--serif); color: var(--ink); text-decoration: none; }
+    nav { display: flex; gap: 22px; font-size: 15px; }
+    nav a { text-decoration: none; }
+    nav a:hover, nav a[aria-current] { color: var(--accent); }
+
+    .tools { max-width: 940px; margin: 0 auto; padding: 0 var(--gutter) 16px; display: flex; justify-content: flex-end; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--ink); color: var(--paper); text-decoration: none;
+      font: 600 14px/1 var(--sans); padding: 11px 16px; border-radius: 6px;
+    }
+    .btn:hover { background: var(--accent); }
+    .btn svg { width: 16px; height: 16px; }
+
+    /* ---- the page ---- */
+    .sheet {
+      max-width: 940px; margin: 0 auto 64px; padding: 0 var(--gutter);
+    }
+    .paper {
+      background: var(--paper); border: 1px solid var(--rule); border-radius: 6px;
+      padding: clamp(24px, 6vw, 64px) clamp(20px, 6vw, 68px);
+    }
+
+    header.r-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+    .r-name { font: 400 clamp(38px, 6vw, 50px)/1 var(--serif); color: var(--ink); margin: 0; letter-spacing: -0.01em; }
+    .tagline { margin: 12px 0 0; color: var(--muted); font-size: 15px; }
+    .tagline span { white-space: nowrap; }
+    .tagline span + span::before { content: "·"; margin: 0 .5em; }
+    @media (max-width: 700px) {
+      header.r-head { flex-direction: column; gap: 14px; }
+      header.r-head address { text-align: left; }
+    }
+    address { font-style: normal; text-align: right; font-size: 14px; line-height: 1.6; white-space: nowrap; }
+    address a { text-decoration: none; }
+    address a:hover { color: var(--accent); }
+
+    .lede { font: 400 clamp(17px, 2.1vw, 18.5px)/1.6 var(--serif); color: var(--ink); margin: 28px 0 26px; max-width: 46em; }
+
+    section.sec {
+      display: grid; grid-template-columns: 150px 1fr; gap: 0 24px;
+      border-top: 1px solid var(--rule); padding: 18px 0 20px;
+    }
+    .label {
+      font: 700 11px/1 var(--sans); letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+      margin: 6px 0 0;
+    }
+
+    /* experience */
+    .job + .job { margin-top: 18px; }
+    .job-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; }
+    .org { font-weight: 700; font-size: 16px; color: var(--ink); }
+    .role { font-size: 16px; }
+    .dates { margin-left: auto; color: var(--muted); font-size: 13.5px; white-space: nowrap; }
+    ul.bul { list-style: none; margin: 6px 0 0; padding: 0; }
+    ul.bul li { position: relative; padding-left: 16px; margin-top: 3px; }
+    ul.bul li::before { content: "–"; position: absolute; left: 0; color: var(--muted); }
+
+    /* awards */
+    .awards { display: grid; grid-template-columns: 1fr 1fr; gap: 0 32px; }
+    .award { margin: 0 0 12px; }
+    .award h3, .entry h3 { font: 600 15px/1.35 var(--sans); color: var(--ink); margin: 0 0 3px; }
+    .yr { display: grid; grid-template-columns: 40px 1fr; font-size: 14px; }
+    .yr span:first-child { color: var(--muted); }
+
+    /* skills */
+    dl.skills { display: grid; grid-template-columns: 190px 1fr; gap: 5px 16px; margin: 0; }
+    dl.skills dt { font-weight: 600; color: var(--ink); }
+    dl.skills dd { margin: 0; font-size: 14.5px; }
+
+    /* education */
+    .entry + .entry { margin-top: 12px; }
+    .entry-head { display: flex; align-items: baseline; gap: 10px; }
+    .entry p { margin: 0; font-size: 14.5px; }
+
+    .foot { max-width: 940px; margin: -40px auto 48px; padding: 0 var(--gutter); color: var(--muted); font-size: 14px; }
+
+    /* ---- tablet ---- */
+    @media (max-width: 760px) {
+      section.sec { grid-template-columns: 1fr; }
+      .label { margin: 4px 0 14px; }
+      .awards { grid-template-columns: 1fr; }
+      dl.skills { grid-template-columns: 170px 1fr; }
+    }
+    /* ---- phone ---- */
+    @media (max-width: 560px) {
+      .bar { padding-top: 16px; padding-bottom: 16px; }
+      .tools { justify-content: stretch; }
+      .btn { width: 100%; justify-content: center; }
+      .paper { border-radius: 0; border-left: 0; border-right: 0; }
+      .sheet { padding: 0; }
+      header.r-head { flex-direction: column; gap: 14px; }
+      address { text-align: left; }
+      .dates { margin-left: 0; width: 100%; }
+      .awards { grid-template-columns: 1fr; }
+      dl.skills { grid-template-columns: 1fr; gap: 0; }
+      dl.skills dd { margin-bottom: 10px; }
+    }
+
+    /* ---- print: back to one letter-size page ---- */
+    @media print {
+      @page { size: letter; margin: 0.55in 0.6in; }
+      body { background: #fff; font-size: 9.6pt; }
+      .bar, .tools, .foot { display: none; }
+      .sheet { padding: 0; margin: 0; max-width: none; }
+      .paper { border: 0; padding: 0; background: #fff; }
+      .r-name { font-size: 30pt; }
+      .lede { font-size: 11pt; margin: 14pt 0 12pt; }
+      section.sec { grid-template-columns: 1.45in 1fr; padding: 9pt 0 10pt; break-inside: avoid; }
+      .org, .role { font-size: 10.5pt; }
+      .awards { grid-template-columns: 1fr 1fr; }
+      a { text-decoration: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bar">
+    <a class="home" href="index.html">Kyle Kim</a>
+    <nav aria-label="Site">
+      <a href="maps.html">Map work</a>
+      <a href="resume.html" aria-current="page">Resume</a>
+      <a href="mailto:yong.kyle.kim@gmail.com">Email</a>
+    </nav>
+  </div>
+
+  <div class="tools">
+    <a class="btn" href="files/resume2026.pdf" download="Kyle-Kim-Resume.pdf">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+      Download PDF
+    </a>
+  </div>
+
+  <main class="sheet">
+    <article class="paper">
+      <header class="r-head">
+        <div>
+          <h1 class="r-name">Kyle Kim</h1>
+          <p class="tagline"><span>Journalist</span><span>Data visualist</span><span>Mapmaker</span><span>Coder</span></p>
+        </div>
+        <address>
+          New York City<br>
+          <a href="mailto:yong.kyle.kim@gmail.com">yong.kyle.kim@gmail.com</a><br>
+          <a href="tel:+14102062684">410.206.2684</a>
+        </address>
+      </header>
+
+      <p class="lede">Data visualization specialist with 12+ years of experience in newsrooms. I analyze and translate complex data into visually compelling charts, maps and other graphics. I currently work at Bloomberg News as a graphics reporter and have worked previously at The Wall Street Journal and the Los Angeles Times.</p>
+
+      <section class="sec" aria-labelledby="h-exp">
+        <h2 class="label" id="h-exp">Experience</h2>
+        <div>
+          <div class="job">
+            <div class="job-head"><span class="org">Bloomberg News</span><span class="role">Graphics reporter</span><span class="dates">Aug. 2022 – Present</span></div>
+            <ul class="bul">
+              <li>Design and deploy static and interactive data visualizations. I also often lead end-to-end data analysis and reporting for data visualization.</li>
+              <li>Built static and interactive maps using a wide variety of geospatial data including raster and vector often for climate-related stories.</li>
+              <li>Work in a highly collaborative environment, often partnering with reporters, editors and developers to turn complex information into clear visuals.</li>
+            </ul>
+          </div>
+          <div class="job">
+            <div class="job-head"><span class="org">The Wall Street Journal</span><span class="role">Graphics reporter</span><span class="dates">Apr. 2020 – Aug. 2022</span></div>
+            <ul class="bul">
+              <li>Led reporting and analysis for enterprise visual investigations in business, sports and features.</li>
+              <li>Partnered with cross-disciplinary teams to turn data into publication-ready graphics for Page One and national coverage.</li>
+              <li>Helped graphics leadership coordinate visual coverage strategy across multiple desks.</li>
+            </ul>
+          </div>
+          <div class="job">
+            <div class="job-head"><span class="org">Los Angeles Times</span><span class="role">Graphics and data journalist</span><span class="dates">May 2014 – Apr. 2020</span></div>
+            <ul class="bul">
+              <li>Analyzed data to produce visual investigations for enterprise and breaking news coverage.</li>
+              <li>Assisted leading breaking news graphics coverage.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec" aria-labelledby="h-awards">
+        <h2 class="label" id="h-awards">Awards</h2>
+        <div class="awards">
+          <div>
+            <div class="award"><h3>Pulitzer Prize</h3>
+              <div class="yr"><span>2024</span><span>Explanatory Reporting, finalist</span></div>
+              <div class="yr"><span>2015</span><span>Breaking News Reporting, staff</span></div>
+            </div>
+            <div class="award"><h3>Society for News Design</h3>
+              <div class="yr"><span>2025</span><span>Award of Excellence (2)</span></div>
+              <div class="yr"><span>2016</span><span>Award of Excellence (2)</span></div>
+              <div class="yr"><span>2015</span><span>Silver Medal, Information Graphics</span></div>
+            </div>
+            <div class="award"><h3>Malofiej</h3>
+              <div class="yr"><span>2015</span><span>Bronze: Breaking News, Features</span></div>
+            </div>
+          </div>
+          <div>
+            <div class="award"><h3>New York Press Club</h3>
+              <div class="yr"><span>2024</span><span>Climate and Environment (National)</span></div>
+            </div>
+            <div class="award"><h3>Los Angeles Press Club</h3>
+              <div class="yr"><span>2024</span><span>Graphic, 3rd place</span></div>
+              <div class="yr"><span>2017</span><span>Local Political/Government Reporting, 3rd place</span></div>
+            </div>
+            <div class="award"><h3>California Journalism Awards</h3>
+              <div class="yr"><span>2018</span><span>Informational Graphic</span></div>
+            </div>
+            <div class="award"><h3>Best American Infographics</h3>
+              <div class="yr"><span>2015</span><span>“The evolution of California’s drought”</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec" aria-labelledby="h-skills">
+        <h2 class="label" id="h-skills">Skills</h2>
+        <dl class="skills">
+          <dt>Visualization &amp; design</dt><dd>Adobe Illustrator, Photoshop, Figma</dd>
+          <dt>Data analysis</dt><dd>R, Python, Excel</dd>
+          <dt>Web development</dt><dd>HTML/CSS, JavaScript, Svelte</dd>
+          <dt>GIS</dt><dd>QGIS, GDAL, remote sensing, Blender</dd>
+        </dl>
+      </section>
+
+      <section class="sec" aria-labelledby="h-edu">
+        <h2 class="label" id="h-edu">Education</h2>
+        <div>
+          <div class="entry">
+            <div class="entry-head"><h3>Whitworth University</h3><span class="dates">2011</span></div>
+            <p>B.A. Journalism and Mass Communication, minor in Visual Communication</p>
+          </div>
+        </div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

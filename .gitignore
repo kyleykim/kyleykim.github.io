@@ -1,2 +1,6 @@
 
 .DS_Store
+
+# raw map exports and recordings; the site uses the optimized copies in img/maps/web
+img/maps/*
+!img/maps/web/

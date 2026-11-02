@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Map Work · Kyle Kim</title>
+  <meta name="description" content="Selected climate and environmental maps by Kyle Kim, graphics reporter at Bloomberg News.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,600;0,700;1,400&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #F5F3EC;
+      --surface: #EDEAE1;
+      --ink: #141413;
+      --body: #3D3D3A;
+      --muted: #73726C;
+      --rule: #DDD7CA;
+      --accent: #C2643F;
+      --serif: "Lora", Georgia, "Times New Roman", serif;
+      --sans: "Lato", "Helvetica Neue", Arial, sans-serif;
+      --max: 1120px;
+      --gutter: clamp(16px, 4vw, 48px);
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--body);
+      font: 400 17px/1.6 var(--sans);
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration-color: var(--rule); text-underline-offset: 3px; }
+    a:hover { text-decoration-color: var(--accent); }
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+
+    /* ---- Header ---- */
+    .site-head {
+      display: flex; justify-content: space-between; align-items: flex-end; gap: 24px;
+      padding: 48px 0 28px; border-bottom: 1px solid var(--rule);
+    }
+    .name { font: 400 clamp(34px, 5vw, 46px)/1 var(--serif); color: var(--ink); margin: 0; letter-spacing: -0.01em; }
+    .name a { text-decoration: none; }
+    .tagline { margin: 10px 0 0; color: var(--muted); font-size: 15px; }
+    .tagline span + span::before { content: "·"; margin: 0 .55em; }
+    nav { display: flex; gap: 22px; font-size: 15px; white-space: nowrap; }
+    nav a { text-decoration: none; color: var(--body); }
+    nav a:hover, nav a[aria-current] { color: var(--accent); }
+
+    /* ---- Intro ---- */
+    .intro { padding: 64px 0 24px; max-width: 760px; }
+    .eyebrow {
+      font: 700 12px/1 var(--sans); letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+      margin: 0 0 14px;
+    }
+    .intro h1 { font: 400 clamp(30px, 4.4vw, 44px)/1.15 var(--serif); color: var(--ink); margin: 0 0 18px; }
+    .lede { font: 400 clamp(18px, 2vw, 21px)/1.55 var(--serif); color: var(--ink); margin: 0; }
+    .jump { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 28px 0 0; padding: 0; list-style: none; font-size: 15px; }
+    .jump a { text-decoration: none; color: var(--muted); }
+    .jump a:hover { color: var(--accent); }
+    .jump b { color: var(--accent); font-weight: 700; margin-right: 6px; font-size: 12px; letter-spacing: .1em; }
+
+    /* ---- Project ---- */
+    .project { padding: 56px 0 64px; border-top: 1px solid var(--rule); scroll-margin-top: 16px; }
+    .project:first-of-type { margin-top: 40px; }
+    .p-head { display: grid; grid-template-columns: 1fr 300px; gap: 24px 64px; align-items: end; margin-bottom: 32px; }
+    .p-head h2 { font: 400 clamp(26px, 3.3vw, 36px)/1.18 var(--serif); color: var(--ink); margin: 0 0 14px; }
+    .p-head h2 a { text-decoration: none; }
+    .p-head h2 a:hover { color: var(--accent); }
+    .summary { margin: 0; max-width: 680px; }
+    .story-link {
+      display: inline-flex; align-items: center; gap: 8px; justify-self: start;
+      font-weight: 600; font-size: 15px; color: var(--ink); text-decoration: none;
+      border-bottom: 1px solid var(--accent); padding-bottom: 2px;
+    }
+    .story-link:hover { color: var(--accent); }
+
+    /* figures */
+    .figs { display: grid; gap: 16px; }
+    .figs.hero-3 { grid-template-columns: repeat(3, 1fr); }
+    .figs.hero-3 > :first-child { grid-column: 1 / -1; }
+    .figs.desk-mob { grid-template-columns: 1fr minmax(160px, 26%); align-items: start; }
+    .figs.two { grid-template-columns: 1fr 1fr; }
+    .figs.one-two { grid-template-columns: 1fr 1fr; }
+    .figs.one-two > :first-child { grid-column: 1 / -1; }
+    .row-eq { display: flex; gap: 16px; align-items: flex-start; }
+    .row-eq > figure { flex-basis: 0; min-width: 0; }
+    .process-label {
+      font: 700 11.5px/1 var(--sans); letter-spacing: .15em; text-transform: uppercase; color: var(--muted);
+      margin: 28px 0 12px;
+    }
+    figcaption b { color: var(--accent); font-weight: 700; margin-right: 4px; }
+    figure { margin: 0; }
+    .frame {
+      position: relative; overflow: hidden; border-radius: 4px; background: var(--surface);
+      aspect-ratio: var(--ar, 16 / 9);
+    }
+    .frame img, .frame video { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .ph {
+      position: absolute; inset: 0; display: grid; place-content: center; gap: 6px; text-align: center; padding: 16px;
+      color: var(--muted); font-size: 13px; line-height: 1.4;
+      background:
+        repeating-linear-gradient(135deg, transparent 0 11px, rgba(20,20,19,.045) 11px 12px),
+        var(--surface);
+      border: 1px dashed var(--rule);
+      border-radius: 4px;
+    }
+    .ph strong { color: var(--body); font-weight: 600; font-size: 14px; }
+    .ph code { font: 12px/1.3 ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--accent); word-break: break-all; }
+    .frame.loaded .ph { display: none; }
+    figcaption { font-size: 13.5px; line-height: 1.45; color: var(--muted); margin-top: 9px; }
+
+    /* meta */
+    .meta {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px 40px;
+      margin: 36px 0 0; padding: 24px 0 0; border-top: 1px solid var(--rule);
+    }
+    .meta dt {
+      font: 700 11.5px/1 var(--sans); letter-spacing: .15em; text-transform: uppercase; color: var(--accent); margin: 0 0 10px;
+    }
+    .meta dd { margin: 0; font-size: 15px; line-height: 1.55; }
+    .meta ul { margin: 0; padding: 0; list-style: none; }
+    .meta li + li { margin-top: 3px; }
+
+    /* footer */
+    .site-foot {
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 32px;
+      padding: 36px 0 56px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 15px;
+    }
+    .site-foot a { color: var(--body); }
+
+    @media (max-width: 820px) {
+      .site-head { flex-direction: column; align-items: flex-start; }
+      .p-head { grid-template-columns: 1fr; }
+      .meta { grid-template-columns: 1fr; gap: 20px; }
+      .figs.hero-3 { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 560px) {
+      body { font-size: 16px; }
+      .intro { padding-top: 44px; }
+      .figs.hero-3, .figs.two, .figs.one-two { grid-template-columns: 1fr; }
+      .row-eq { flex-direction: column; }
+      .row-eq > figure { width: 100%; }
+      .figs.desk-mob { grid-template-columns: 1fr 34%; gap: 10px; }
+      nav { gap: 16px; flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="site-head">
+      <div>
+        <p class="name"><a href="index.html">Kyle Kim</a></p>
+        <p class="tagline"><span>Journalist</span><span>Data visualist</span><span>Mapmaker</span><span>Coder</span></p>
+      </div>
+      <nav aria-label="Site">
+        <a href="maps.html" aria-current="page">Map work</a>
+        <a href="resume.html">Resume</a>
+        <a href="mailto:yong.kyle.kim@gmail.com">Email</a>
+      </nav>
+    </header>
+
+    <section class="intro">
+      <p class="eyebrow">Selected map work</p>
+      <h1>Maps from climate and environmental reporting</h1>
+      <p class="lede">Four recent projects from Bloomberg News, each built from my own analysis of satellite, climate and geospatial data, from layered static maps to my first interactive 3D terrain scene, plus a personal remote sensing study.</p>
+      <ul class="jump">
+        <li><a href="#swiss-alps"><b>01</b>Swiss Alps glacier collapse</a></li>
+        <li><a href="#reservoirs"><b>02</b>US reservoir storage</a></li>
+        <li><a href="#arctic-fires"><b>03</b>Arctic fires</a></li>
+        <li><a href="#snow-drought"><b>04</b>Snow drought</a></li>
+        <li><a href="#maria-blackout"><b>05</b>Personal study: Maria blackout</a></li>
+      </ul>
+    </section>
+
+    <main>
+      <!-- 01 -->
+      <article class="project" id="swiss-alps">
+        <div class="p-head">
+          <div>
+            <p class="eyebrow">01 · Bloomberg News · 2025</p>
+            <h2><a href="https://www.bloomberg.com/graphics/2026-swiss-glacier-collapse-risk/">The Swiss Alps Reckon With the Threat of Collapsing Glaciers</a></h2>
+            <p class="summary">An interactive 3D recreation of the 2025 Blatten glacier collapse, built from satellite imagery and Swiss elevation data. I storyboarded the sequence and modeled the terrain in Blender; a senior developer then helped me move the workflow to Threlte so the scene renders live as readers scroll. It was the department’s first Threlte story, paired with a static map of at-risk glaciers across the Alps.</p>
+          </div>
+          <a class="story-link" href="https://www.bloomberg.com/graphics/2026-swiss-glacier-collapse-risk/">Read the story <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="figs">
+          <figure>
+            <div class="frame" data-src="img/maps/web/blatten-recording.mp4" data-poster="img/maps/web/blatten-recording-poster.jpg" style="--ar: 1280 / 848">
+              <div class="ph"><strong>3D scroll recording</strong><code>img/maps/web/blatten-recording.mp4</code></div>
+            </div>
+            <figcaption>The 3D scroll: the Birch glacier above Blatten gives way, rendered live in the browser with Threlte.</figcaption>
+          </figure>
+        </div>
+        <p class="process-label">From terrain to scene, in Blender</p>
+        <div class="row-eq">
+          <figure style="flex-grow: 1.166">
+            <div class="frame" data-src="img/maps/web/blatten-blender-1.jpg" style="--ar: 1070 / 918">
+              <div class="ph"><strong>Elevation mesh</strong><code>blatten-blender-1.jpg</code></div>
+            </div>
+            <figcaption><b>1</b> Elevation model of the valley.</figcaption>
+          </figure>
+          <figure style="flex-grow: 0.886">
+            <div class="frame" data-src="img/maps/web/blatten-blender-2.jpg" style="--ar: 822 / 928">
+              <div class="ph"><strong>Imagery import</strong><code>blatten-blender-2.jpg</code></div>
+            </div>
+            <figcaption><b>2</b> Draping satellite imagery with BlenderGIS.</figcaption>
+          </figure>
+          <figure style="flex-grow: 1.478">
+            <div class="frame" data-src="img/maps/web/blatten-blender-3.jpg" style="--ar: 1360 / 920">
+              <div class="ph"><strong>Textured terrain</strong><code>blatten-blender-3.jpg</code></div>
+            </div>
+            <figcaption><b>3</b> Textured terrain with the Birch glacier highlighted.</figcaption>
+          </figure>
+        </div>
+        <div class="figs" style="margin-top: 28px">
+          <figure>
+            <div class="frame" data-src="img/maps/web/blatten-valley.mp4" data-poster="img/maps/web/blatten-valley-poster.jpg" style="--ar: 1280 / 848">
+              <div class="ph"><strong>Static map scroll</strong><code>img/maps/web/blatten-valley.mp4</code></div>
+            </div>
+            <figcaption>The companion static map: at-risk glaciers, past glacier incidents and nearby towns and ski areas across the Swiss Alps.</figcaption>
+          </figure>
+        </div>
+        <dl class="meta">
+          <div><dt>Role</dt><dd>Reporting, analysis, design, 3D modeling, storyboarding, coding</dd></div>
+          <div><dt>Data</dt><dd><ul><li>Satellite imagery</li><li>Glacier-extent climate models</li><li>Swiss elevation and topographic data</li></ul></dd></div>
+          <div><dt>Tools</dt><dd>QGIS, GDAL, Blender, Figma, Illustrator, Svelte/Threlte, LLM tools</dd></div>
+        </dl>
+      </article>
+
+      <!-- 02 -->
+      <article class="project" id="reservoirs">
+        <div class="p-head">
+          <div>
+            <p class="eyebrow">02 · Bloomberg News · Sept. 8, 2026</p>
+            <h2><a href="https://www.bloomberg.com/graphics/2026-reservoir-levels-drought/">The US Is Losing Its Ability to Store Water When It Needs It Most</a></h2>
+            <p class="summary">Maps of shrinking reservoir storage across the US, joining the National Inventory of Dams with federal sedimentation surveys, HydroSHEDS flow direction and wildfire perimeters. Data processing and prototyping were sped up with LLM-assisted workflows.</p>
+          </div>
+          <a class="story-link" href="https://www.bloomberg.com/graphics/2026-reservoir-levels-drought/">Read the story <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="figs one-two">
+          <figure>
+            <div class="frame" data-src="img/maps/reservoir-map.png" style="--ar: 16 / 9">
+              <div class="ph"><strong>Main map</strong><code>img/maps/reservoir-map.png</code></div>
+            </div>
+            <figcaption>Caption for the main reservoir map.</figcaption>
+          </figure>
+          <figure>
+            <div class="frame" data-src="img/maps/reservoir-map-02.png" style="--ar: 4 / 3">
+              <div class="ph"><strong>Detail map</strong><code>img/maps/reservoir-map-02.png</code></div>
+            </div>
+            <figcaption>Caption for a detail map, e.g. a watershed with wildfire perimeters.</figcaption>
+          </figure>
+          <figure>
+            <div class="frame" data-src="img/maps/reservoir-map-03.png" style="--ar: 4 / 3">
+              <div class="ph"><strong>Second detail or mobile view</strong><code>img/maps/reservoir-map-03.png</code></div>
+            </div>
+            <figcaption>Caption for a second detail or the mobile layout.</figcaption>
+          </figure>
+        </div>
+        <dl class="meta">
+          <div><dt>Role</dt><dd>Reporting, analysis, storyboarding, coding</dd></div>
+          <div><dt>Data</dt><dd><ul><li>National Inventory of Dams</li><li>Federal dam sedimentation data</li><li>Colorado wildfire perimeters</li><li>HydroSHEDS flow direction</li></ul></dd></div>
+          <div><dt>Tools</dt><dd>QGIS, Canvas, JavaScript, LLM tools</dd></div>
+        </dl>
+      </article>
+
+      <!-- 03 -->
+      <article class="project" id="arctic-fires">
+        <div class="p-head">
+          <div>
+            <p class="eyebrow">03 · Bloomberg News · Sept. 23, 2024</p>
+            <h2><a href="http://bloomberg.com/graphics/2024-underground-wildfires/">Climate Change Is So Bad, Even the Arctic Is On Fire</a></h2>
+            <p class="summary">Maps of wildfire activity across the Arctic, built from NASA FIRMS satellite fire detections and Copernicus fire-emissions data, designed to read from mobile to desktop.</p>
+          </div>
+          <a class="story-link" href="http://bloomberg.com/graphics/2024-underground-wildfires/">Read the story <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="row-eq">
+          <figure style="flex-grow: 1.118">
+            <div class="frame" data-src="img/maps/web/arctic-wildfire.jpg" style="--ar: 1970 / 1762">
+              <div class="ph"><strong>Arctic wildfire map</strong><code>arctic-wildfire.jpg</code></div>
+            </div>
+            <figcaption>2024 wildfires across Arctic and subarctic tundra and boreal forest.</figcaption>
+          </figure>
+          <figure style="flex-grow: 1.416">
+            <div class="frame" data-src="img/maps/web/arctic-wildfire-pantanal.mp4" data-poster="img/maps/web/arctic-wildfire-pantanal-poster.jpg" style="--ar: 1280 / 904">
+              <div class="ph"><strong>Pantanal fire season</strong><code>arctic-wildfire-pantanal.mp4</code></div>
+            </div>
+            <figcaption>The 2024 fire season in the Pantanal, building up from satellite fire detections alongside a 7-day average.</figcaption>
+          </figure>
+        </div>
+        <dl class="meta">
+          <div><dt>Role</dt><dd>Analysis, design, storyboarding, coding</dd></div>
+          <div><dt>Data</dt><dd><ul><li>NASA Fire Information for Resource Management System (FIRMS)</li><li>Copernicus Atmosphere Monitoring Service, Global Fire Assimilation System</li></ul></dd></div>
+          <div><dt>Tools</dt><dd>QGIS, Python, Illustrator, Canvas</dd></div>
+        </dl>
+      </article>
+
+      <!-- 04 -->
+      <article class="project" id="snow-drought">
+        <div class="p-head">
+          <div>
+            <p class="eyebrow">04 · Bloomberg News · Jan. 10, 2024</p>
+            <h2><a href="https://www.bloomberg.com/graphics/2024-snow-drought-climate-change/">World Nears Dangerous Climate Tipping Point With Snow in Short Supply</a></h2>
+            <p class="summary">Maps of snow drought from NASA MODIS snow cover and modeled snow water equivalent, layered with California fire perimeters and tree-cover loss.</p>
+          </div>
+          <a class="story-link" href="https://www.bloomberg.com/graphics/2024-snow-drought-climate-change/">Read the story <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="row-eq">
+          <figure style="flex-grow: 1.509">
+            <div class="frame" data-src="img/maps/web/snowdrought.mp4" data-poster="img/maps/web/snowdrought-poster.jpg" style="--ar: 1280 / 848">
+              <div class="ph"><strong>Snow cover animation</strong><code>snowdrought.mp4</code></div>
+            </div>
+            <figcaption>Monthly snow coverage across the Northern Hemisphere through the 2022–23 winter.</figcaption>
+          </figure>
+          <figure style="flex-grow: 1.217">
+            <div class="frame" data-src="img/maps/web/snowdrought-static-map.jpg" style="--ar: 2000 / 1644">
+              <div class="ph"><strong>Upper Feather River map</strong><code>snowdrought-static-map.jpg</code></div>
+            </div>
+            <figcaption>Wildfires since 2000 and tree loss in the Upper Feather River Watershed, which feeds Lake Oroville.</figcaption>
+          </figure>
+        </div>
+        <dl class="meta">
+          <div><dt>Role</dt><dd>Reporting, analysis, design, co-storyboarding, coding</dd></div>
+          <div><dt>Data</dt><dd><ul><li>Snow drought analysis from a peer-reviewed study</li><li>NASA Terra/MODIS snow cover</li><li>NASA Goddard snow water equivalent land surface model</li><li>Cal Fire perimeters and tree-cover loss</li></ul></dd></div>
+          <div><dt>Tools</dt><dd>QGIS, R, Figma, Illustrator, JavaScript</dd></div>
+        </dl>
+      </article>
+
+      <!-- 05: personal study -->
+      <article class="project" id="maria-blackout">
+        <div class="p-head">
+          <div>
+            <p class="eyebrow">05 · Personal study · Remote sensing</p>
+            <h2>Mapping the Hurricane Maria blackout in San Juan</h2>
+            <p class="summary">A self-directed exercise to build my remote sensing skills: mapping the loss of nighttime light around San Juan, Puerto Rico, between August 2017 and Oct. 4, 2017, after Hurricane Maria. Rather than placing before and after images side by side, I tried to show the difference itself, using an upsampled NDUI approach instead of the native VIIRS Day/Night Band radiance alone.</p>
+          </div>
+        </div>
+        <div class="figs">
+          <figure>
+            <div class="frame" data-src="img/maps/web/san_juan_blackout_analysis.jpg" style="--ar: 1563 / 1131">
+              <div class="ph"><strong>San Juan blackout analysis</strong><code>san_juan_blackout_analysis.jpg</code></div>
+            </div>
+            <figcaption>Light lost versus retained around San Juan after Hurricane Maria.</figcaption>
+          </figure>
+        </div>
+        <dl class="meta">
+          <div><dt>Type</dt><dd>Personal study, not published</dd></div>
+          <div><dt>Data</dt><dd><ul><li>VIIRS Day/Night Band nighttime radiance</li><li>August 2017 and Oct. 4, 2017</li></ul></dd></div>
+          <div><dt>Method</dt><dd>Upsampled NDUI, used to show change directly</dd></div>
+        </dl>
+      </article>
+    </main>
+
+    <footer class="site-foot">
+      <span>Kyle Kim · Graphics reporter, Bloomberg News · New York City</span>
+      <span><a href="mailto:yong.kyle.kim@gmail.com">yong.kyle.kim@gmail.com</a> · <a href="files/resume2026.pdf">Resume (PDF)</a></span>
+    </footer>
+  </div>
+
+  <script>
+    // Each .frame tries to load its file; the placeholder stays until the file exists.
+    document.querySelectorAll('.frame[data-src]').forEach(function (frame) {
+      var src = frame.dataset.src;
+      var alt = (frame.querySelector('.ph strong') || {}).textContent || '';
+      if (/\.(mp4|webm|mov)$/i.test(src)) {
+        var v = document.createElement('video');
+        v.muted = true; v.loop = true; v.autoplay = true; v.playsInline = true;
+        v.setAttribute('aria-label', alt);
+        if (frame.dataset.poster) v.poster = frame.dataset.poster;
+        v.addEventListener('loadeddata', function () { frame.prepend(v); frame.classList.add('loaded'); });
+        v.addEventListener('error', function () { tryPoster(frame); }, true);
+        v.src = src;
+        v.load();
+      } else {
+        loadImg(frame, src, alt);
+      }
+    });
+    function tryPoster(frame) {
+      if (frame.dataset.poster) loadImg(frame, frame.dataset.poster, 'Still of the 3D scene');
+    }
+    function loadImg(frame, src, alt) {
+      var img = new Image();
+      img.alt = alt; img.loading = 'lazy'; img.decoding = 'async';
+      // In the DOM from the start so lazy loading can trigger; the placeholder covers it until it loads
+      img.onload = function () { frame.classList.add('loaded'); };
+      img.onerror = function () { img.remove(); };
+      img.src = src;
+      frame.prepend(img);
+    }
+  </script>
+</body>
+</html>
