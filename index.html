@@ -1,415 +1,98 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Temporary: send the homepage to the maps page; remove this line to restore the old homepage -->
-    <meta http-equiv="refresh" content="0; url=maps.html">
-    <link rel="canonical" href="https://kyleykim.github.io/maps.html">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kyle Kim</title>
+  <meta name="description" content="Kyle Kim is a data visualization specialist based in New York City, making graphics for Bloomberg News.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;600&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #F5F3EC;
+      --ink: #141413;
+      --body: #3D3D3A;
+      --muted: #73726C;
+      --rule: #DDD7CA;
+      --accent: #C2643F;
+      --serif: "Lora", Georgia, "Times New Roman", serif;
+      --sans: "Lato", "Helvetica Neue", Arial, sans-serif;
+      --max: 1120px;
+      --gutter: clamp(16px, 4vw, 48px);
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg);
+      color: var(--body);
+      font: 400 17px/1.6 var(--sans);
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration-color: var(--rule); text-underline-offset: 3px; }
+    a:hover { text-decoration-color: var(--accent); }
+    .wrap { position: relative; z-index: 1; width: 100%; max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+    #bg { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    .site-head {
+      display: flex; justify-content: space-between; align-items: baseline; gap: 24px;
+      padding: 40px 0 0;
+    }
+    .name { font: 400 22px/1 var(--serif); color: var(--ink); margin: 0; }
+    nav { display: flex; gap: 22px; font-size: 15px; white-space: nowrap; }
+    nav a { text-decoration: none; color: var(--body); }
+    nav a:hover { color: var(--accent); }
 
-    <title>About Kyle</title>
+    main { flex: 1; display: flex; align-items: center; }
+    .hero {
+      font: 400 clamp(32px, 5.6vw, 64px)/1.18 var(--serif);
+      color: var(--ink);
+      letter-spacing: -0.015em;
+      max-width: 17em;
+      margin: 0;
+      padding: 80px 0;
+    }
+    .hero a { text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 6px; }
+    .hero a:hover { color: var(--accent); }
+
+    .site-foot { padding: 0 0 40px; color: var(--muted); font-size: 15px; }
+
+    @media (max-width: 560px) {
+      .site-head { flex-direction: column; gap: 14px; }
+      nav { gap: 16px; flex-wrap: wrap; }
+    }
+  </style>
 </head>
-
 <body>
-	<div class="container">
-		<div class="intro">
-			<div class="row text-center">
-				<h3 class="leader">Journalist  |  Data Visualist  |  Designer  |  Coder</h3>
-			</div>
-			<div class="row center-vertical">
-				<div class="col-4">
-					<img class="mug" src="img/mug_web.jpg">
-				</div>
-				<div class="col-8">
-					<h1 class="title">Kyle Kim</h1>
-					<p>Hello 👋</p>
-					<p>I'm a journalist who specializes in data visualization, design and code.</p>
-					<p>I currently work at the Los Angeles Times as a graphics journalist.</p>
-					<p>Ways to reach me 👉
-					<span><a href="mailto:yong.kyle.kim@gmail.com" target="_blank"><i class="far fa-envelope"></i></a>
-					<a href="https://twitter.com/kyleykim" target="_blank"><i class="fab fa-twitter"></i></a>
-					<a href="https://www.linkedin.com/in/kyleykim" target="_blank"><i class="fab fa-linkedin"></i></a>
-					<a href="https://github.com/kyleykim" target="_blank"><i class="fab fa-github"></i></a></span></p>
-					<p><a href="maps.html">Selected map work →</a></p>
-				<!-- 	<p><a href="#" class="list-group-item">Resume</a> | <a href="#" class="list-group-item">Clips</a></span></p> -->
-				</div>
-			</div>
-		</div>
-		<div class="clips">
+  <canvas id="bg" aria-hidden="true"></canvas>
 
-		</div>
-		<div class="row resume">
-			<div class="col-6 resume-left add-space">
-				<p><a href="">(PDF version)</a></p>
-				<h2 class="yellow">Experience</h2>
-				<h3>Graphics and data journalist, Los Angeles Times</h3>
-				<h4>Los Angeles | May 2014 – present</h4>
-				<p><span class="underline">Pitch, report and produce daily and long-term graphics</span>, maps and other data visualizations for print and online.</p>
-				<p>Part of the team that won the <span class="underline">Pulitzer Prize for breaking news reporting</span> on the 2015 San Bernardino terrorist attack.</p>
-				
-				<br />
-				<h3>Deputy social media and news desk editor, GlobalPost</h3>
-				<h4>Boston | May 2013 – May 2014</h4>
-				<p><span class="underline">Pitched, designed and produced</span> more than a dozen GlobalPost reporting projects. </p>
-				<p>Assisted in managing daily social and wire content.</p>
-				<p><span class="underline">Trained more than 15 correspondents and writers</span> with digital reporting skills through training workshops and written guidelines.</p>
+  <div class="wrap">
+    <header class="site-head">
+      <p class="name">Kyle Kim</p>
+      <nav aria-label="Site">
+        <a href="maps.html">Map work</a>
+        <a href="resume.html">Resume</a>
+        <a href="mailto:yong.kyle.kim@gmail.com">Email</a>
+      </nav>
+    </header>
+  </div>
 
-				<br />
-				<h3>Digital news producer, GlobalPost</h3>
-				<h4>Boston | Feb. 2012 – April 2013</h4>
-				<p><span class="underline">Key creative designer</span> having produced more than 40 project designs for in-depth news series. </p>
-				<p>Assisted in managing daily social and wire content.</p>
-				<p>Worked with our social media desk including monitoring and evaluating community engagement, <span class="underline">implementing social media reporting tools and best-practice guidelines.</span></p>
+  <main class="wrap">
+    <h1 class="hero">Data visualization specialist based in New York City. Currently making graphics for <a href="https://www.bloomberg.com/graphics/">Bloomberg News</a>.</h1>
+  </main>
 
-				<br />
-				<h3>Breaking news producer, GlobalPost </h3>
-				<h4>Seattle | Oct. 2011 – Feb. 2012</h4>
-				<p><span class="underline">Wrote and produced international and national breaking news stories</span> based on daily news coverage needs.</p>
-			</div>
-			<div class="row col-4 resume-right">
-				<div class="skill-section first-of">
-					<h2 class="yellow">Skills</h2>
-					<h3>Visualization and design</h3>
-					<div>
-						<div class="skill-circle-row">
-							<div class="wrapper">
-								<div class="full-fill"></div>
-							</div>
-							<div class="wrapper">
-								<div class="full-fill"></div>					
-							</div>
-							<div class="wrapper">
-								<div class="full-fill"></div>
-							</div>
-						</div>
-					<div class="skill-name"">Illustrator</div>
-					</div>
+  <div class="wrap">
+    <footer class="site-foot">
+      <a href="https://www.linkedin.com/in/kyleykim">LinkedIn</a> · <a href="https://github.com/kyleykim">GitHub</a>
+    </footer>
+  </div>
 
-					<div>
-						<div class="skill-circle-row">
-							<div class="wrapper">
-								<div class="full-fill"></div>
-							</div>
-							<div class="wrapper">
-								<div class="full-fill"></div>					
-							</div>
-							<div class="wrapper">
-								<div class="full-fill"></div>
-							</div>
-						</div>
-						<div class="skill-name"">Photoshop</div>
-					</div>
-
-					<div>
-						<div class="skill-circle-row">
-							<div class="wrapper">
-								<div class="full-fill"></div>
-							</div>
-							<div class="wrapper">
-								<div class="full-fill"></div>					
-							</div>
-							<div class="wrapper">
-								<div class="no-fill"></div>
-							</div>
-						</div>
-						<div class="skill-name"">R</div>
-					</div>
-
-					<div>
-						<div class="skill-circle-row">
-							<div class="wrapper">
-								<div class="full-fill"></div>
-							</div>
-							<div class="wrapper">
-								<div class="full-fill"></div>					
-							</div>
-							<div class="wrapper">
-								<div class="no-fill"></div>
-							</div>
-						</div>
-						<div class="skill-name"">XD (wire-framing)</div>
-					</div>
-
-					<div>
-						<div class="skill-circle-row">
-							<div class="wrapper">
-								<div class="full-fill"></div>
-							</div>
-							<div class="wrapper">
-								<div class="half-fill"></div>					
-							</div>
-							<div class="wrapper">
-								<div class="no-fill"></div>
-							</div>
-						</div>
-						<div class="skill-name"">D3.js</div>
-					</div>
-
-					<div>
-						<div class="skill-circle-row">
-							<div class="wrapper">
-								<div class="full-fill"></div>
-							</div>
-							<div class="wrapper">
-								<div class="no-fill"></div>					
-							</div>
-							<div class="wrapper">
-								<div class="no-fill"></div>
-							</div>
-						</div>
-						<div class="skill-name"">three.js</div>
-					</div>
-
-					<div>
-						<div class="skill-circle-row">
-							<div class="wrapper">
-								<div class="full-fill"></div>
-							</div>
-							<div class="wrapper">
-								<div class="no-fill"></div>					
-							</div>
-							<div class="wrapper">
-								<div class="no-fill"></div>
-							</div>
-						</div>
-						<div class="skill-name"">Cinema4D</div>
-					</div>
-
-					<div>
-						<div class="skill-circle-row">
-							<div class="wrapper">
-								<div class="full-fill"></div>
-							</div>
-							<div class="wrapper">
-								<div class="no-fill"></div>					
-							</div>
-							<div class="wrapper">
-								<div class="no-fill"></div>
-							</div>
-						</div>
-						<div class="skill-name"">AfterEffects</div>
-					</div>
-
-					<div>
-						<div class="skill-circle-row">
-							<div class="wrapper">
-								<div class="full-fill"></div>
-							</div>
-							<div class="wrapper">
-								<div class="half-fill"></div>					
-							</div>
-							<div class="wrapper">
-								<div class="no-fill"></div>
-							</div>
-						</div>
-						<div class="skill-name"">AfterEffects</div>
-					</div>
-				</div>
-			
-			<div class="skill-section">
-				<h3>Data analysis</h3>
-				<div>
-					<div class="skill-circle-row">
-						<div class="wrapper">
-							<div class="full-fill"></div>
-						</div>
-						<div class="wrapper">
-							<div class="full-fill"></div>					
-						</div>
-						<div class="wrapper">
-							<div class="full-fill"></div>
-						</div>
-					</div>
-				<div class="skill-name"">Excel</div>
-				</div>
-
-				<div>
-					<div class="skill-circle-row">
-						<div class="wrapper">
-							<div class="full-fill"></div>
-						</div>
-						<div class="wrapper">
-							<div class="full-fill"></div>					
-						</div>
-						<div class="wrapper">
-							<div class="no-fill"></div>
-						</div>
-					</div>
-					<div class="skill-name"">R Studio</div>
-				</div>
-
-				<div>
-					<div class="skill-circle-row">
-						<div class="wrapper">
-							<div class="full-fill"></div>
-						</div>
-						<div class="wrapper">
-							<div class="no-fill"></div>					
-						</div>
-						<div class="wrapper">
-							<div class="no-fill"></div>
-						</div>
-					</div>
-					<div class="skill-name"">Python</div>
-				</div>
-			</div>
-
-			<div class="skill-section">
-				<h3>Mapping</h3>
-				<div>
-					<div class="skill-circle-row">
-						<div class="wrapper">
-							<div class="full-fill"></div>
-						</div>
-						<div class="wrapper">
-							<div class="full-fill"></div>					
-						</div>
-						<div class="wrapper">
-							<div class="full-fill"></div>
-						</div>
-					</div>
-				<div class="skill-name"">QGIS</div>
-				</div>
-
-				<div>
-					<div class="skill-circle-row">
-						<div class="wrapper">
-							<div class="full-fill"></div>
-						</div>
-						<div class="wrapper">
-							<div class="half-fill"></div>					
-						</div>
-						<div class="wrapper">
-							<div class="no-fill"></div>
-						</div>
-					</div>
-					<div class="skill-name"">R Studio</div>
-				</div>
-
-				<div>
-					<div class="skill-circle-row">
-						<div class="wrapper">
-							<div class="full-fill"></div>
-						</div>
-						<div class="wrapper">
-							<div class="half-fill"></div>					
-						</div>
-						<div class="wrapper">
-							<div class="no-fill"></div>
-						</div>
-					</div>
-					<div class="skill-name"">Leaflet/CartoDB</div>
-				</div>
-			</div>
-
-			<div class="skill-section add-space">
-				<h3>Development</h3>
-				<div>
-					<div class="skill-circle-row">
-						<div class="wrapper">
-							<div class="full-fill"></div>
-						</div>
-						<div class="wrapper">
-							<div class="full-fill"></div>					
-						</div>
-						<div class="wrapper">
-							<div class="full-fill"></div>
-						</div>
-					</div>
-				<div class="skill-name"">HTML/CSS</div>
-				</div>
-
-				<div>
-					<div class="skill-circle-row">
-						<div class="wrapper">
-							<div class="full-fill"></div>
-						</div>
-						<div class="wrapper">
-							<div class="full-fill"></div>					
-						</div>
-						<div class="wrapper">
-							<div class="full-fill"></div>
-						</div>
-					</div>
-					<div class="skill-name"">Git</div>
-				</div>
-
-				<div>
-					<div class="skill-circle-row">
-						<div class="wrapper">
-							<div class="full-fill"></div>
-						</div>
-						<div class="wrapper">
-							<div class="half-fill"></div>					
-						</div>
-						<div class="wrapper">
-							<div class="no-fill"></div>
-						</div>
-					</div>
-					<div class="skill-name" >JavaScript</div>
-				</div>
-			</div>
-			<div class="add-space">
-				<h2 class="yellow">Education</h2>
-				<h3>Whitworth University</h3>
-				<h4>Spokane, Wash. | 2011</h4>
-				<p>B.A. Journalism and Mass Communication <br />Visual Communication minor</p>
-				<h3>Macquarie University</h3>
-				<h4>Sydney, Australia | 2010</h4>
-				<p>Media Studies (radio concentration)</p>
-			</div>
-			</div>
-			<div class="row resume-bottom">
-				<div class="col-6 add-space">
-					<h2 class="yellow">Awards</h2>
-					<h3>California Journalism Awards</h3>
-					<h4>2018</h4>
-					<p>Informational Graphic category</p> <br />
-					<h3>L.A. Press Club</h3>
-					<h4>2017</h4>
-					<p>Local Political/Government Reporting, 3rd place</p> <br />
-					<h3>SND</h3>
-					<h4>2016</h4>
-					<p>Award of Excellence in Information Graphics<br />
-					Award of Excellence in Features</p>
-					<p></p>
-					<h4>2015</h4>
-					<p>Silver Medal in Information Graphics </p> <br />
-					<h3>Pulitzer Prize</h3>
-					<h4>2015</h4>
-					<p>Breaking News Reporting, staff</p> <br />
-					<h3>Malofiej</h3>
-					<h4>2015</h4>
-					<p>Bronze in Breaking News <br />
-					Bronze in Features</p>
-				</div>
-				<div class="col-6 add-space">
-					<h2 class="yellow">Achievements</h2>
-					<h3>Executive Leadership Program</h3>
-					<h4>2018</h4>
-					<p>Graduate of the Asian American Journalists Association’s ELP program dedicated to train the next generation of newsroom leaders and managers.</p><br />
-					<h3>Best American Infographics</h3>
-					<h4>2015</h4>
-					<p>The evolution of California's drought was selected and published in the the “Best American Infographics”</p><br />
-					<h3>Voices</h3>
-					<h4>2011</h4>
-					<p>Selected for the Asian American Journalists Association’s annual student journalism program. </p>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- Optional JavaScript -->
-	   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-	   <script type="text/javascript" src="scripts/script.js"></script>
-	   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-	   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-	   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-	 </body>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+  <script src="script/background.js"></script>
+</body>
 </html>
