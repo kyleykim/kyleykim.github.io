@@ -27,6 +27,14 @@
     };
   }
 
+  // Smooth 1D value noise in roughly [-1, 1], for data-like wiggles.
+  const noiseTable = Float32Array.from({ length: 1024 }, seeded(11)).map((v) => v * 2 - 1);
+  function noise1(x) {
+    const i = Math.floor(x), f = x - i, s = f * f * (3 - 2 * f);
+    const a = noiseTable[i & 1023], b = noiseTable[(i + 1) & 1023];
+    return a + (b - a) * s;
+  }
+
   const modes = {
     contour: {
       init() {
@@ -178,25 +186,13 @@
       }
     },
 
-    line: {
-      init() {
-        const rand = seeded(7), n = 64, pts = [];
-        let v = 0;
-        for (let i = 0; i < n; i++) {
-          v += (rand() - 0.42) * 1.2;
-          pts.push(v);
-        }
-        const lo = Math.min(...pts), hi = Math.max(...pts);
-        state = {
-          pts: pts.map((p, i) => [(i / (n - 1)) * W, H * 0.92 - ((p - lo) / (hi - lo)) * H * 0.38])
-        };
-      },
+    ticker: {
       draw(t) {
-        const { pts } = state;
-        const p = reduce ? 1 : Math.min(1, t / 2800);
-        const e = 1 - (1 - p) ** 3;
-        const k = Math.max(1, Math.floor(e * (pts.length - 1)));
-        const visible = pts.slice(0, k + 1);
+        const tipX = W * 0.86, sec = t / 1000;
+        // fast draw-in that eases into a steady scroll, so the tip never stalls
+        const d = reduce ? tipX : 24 * sec + tipX * (1 - Math.exp(-sec / 0.9));
+        const off = Math.max(0, d - tipX), end = d - off;
+        const yAt = (u) => H * 0.74 - H * 0.1 * (noise1(u / 230) + 0.4 * noise1(u / 75 + 50) + 0.15 * noise1(u / 24 + 90));
         ctx.clearRect(0, 0, W, H);
 
         ctx.strokeStyle = rgba(INK, 0.07);
@@ -208,22 +204,205 @@
         }
         ctx.stroke();
 
+        const line = new Path2D();
+        for (let x = 0; x < end; x += 3) line.lineTo(x, yAt(x + off));
+        const ty = yAt(d);
+        line.lineTo(end, ty);
+        const area = new Path2D(line);
+        area.lineTo(end, H); area.lineTo(0, H); area.closePath();
+        const g = ctx.createLinearGradient(0, H * 0.55, 0, H);
+        g.addColorStop(0, rgba(ACCENT, 0.1)); g.addColorStop(1, rgba(ACCENT, 0));
+        ctx.fillStyle = g;
+        ctx.fill(area);
+        ctx.strokeStyle = rgba(ACCENT, 0.55);
+        ctx.lineWidth = 2;
+        ctx.lineJoin = 'round';
+        ctx.stroke(line);
+
+        // "last value" guide from the tip to the edge
+        ctx.setLineDash([3, 4]);
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = rgba(ACCENT, 0.3);
+        ctx.beginPath(); ctx.moveTo(end, ty); ctx.lineTo(W, ty); ctx.stroke();
+        ctx.setLineDash([]);
+
+        const pulse = (t / 1600) % 1;
+        ctx.strokeStyle = rgba(ACCENT, 0.4 * (1 - pulse));
+        ctx.beginPath(); ctx.arc(end, ty, 3.5 + pulse * 10, 0, Math.PI * 2); ctx.stroke();
+        ctx.fillStyle = rgba(ACCENT, 0.9);
+        ctx.beginPath(); ctx.arc(end, ty, 3.5, 0, Math.PI * 2); ctx.fill();
+      }
+    },
+
+    ensemble: {
+      draw(t) {
+        const n = 36, step = 5, tt = t * 0.00007;
+        const x0 = W * 0.4, y0 = H * 0.8, J = Math.ceil((W + 10 - x0) / step) + 1;
+        const reveal = reduce ? 1 : d3.easeCubicOut(Math.min(1, t / 3600));
+        const proj = (x, bias, k, amp) => {
+          const f = (x - x0) / (W - x0);
+          return y0 - H * 0.3 * f ** 1.3 + H * 0.17 * f ** 1.1 * (bias + amp * field(x * 0.0025, k * 0.83, tt));
+        };
+        const lo = new Float32Array(J).fill(Infinity), hi = new Float32Array(J).fill(-Infinity);
+        const rows = Array.from({ length: n }, (_, k) => {
+          const row = new Float32Array(J), bias = (k / (n - 1) - 0.5) * 1.2;
+          for (let j = 0; j < J; j++) {
+            row[j] = proj(x0 + j * step, bias, k, 0.45);
+            lo[j] = Math.min(lo[j], row[j]); hi[j] = Math.max(hi[j], row[j]);
+          }
+          return row;
+        });
+        const n0 = noise1(x0 / 16) + 0.5 * noise1(x0 / 5 + 30);
+        const hist = (x) => y0 + H * 0.06 * (1 - x / x0) ** 1.6 + H * 0.022 * (noise1(x / 16) + 0.5 * noise1(x / 5 + 30) - n0);
+
+        ctx.clearRect(0, 0, W, H);
+        ctx.save();
+        ctx.beginPath(); ctx.rect(0, 0, reveal * (W + 10), H); ctx.clip();
+
+        ctx.lineWidth = 1;
+        ctx.setLineDash([3, 4]);
+        ctx.strokeStyle = rgba(INK, 0.14);
+        ctx.beginPath(); ctx.moveTo(x0 + 0.5, y0 - H * 0.42); ctx.lineTo(x0 + 0.5, H); ctx.stroke();
+        ctx.setLineDash([]);
+
         ctx.beginPath();
-        visible.forEach(([x, y], i) => (i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)));
-        const [lx, ly] = visible[visible.length - 1];
-        ctx.lineTo(lx, H); ctx.lineTo(0, H); ctx.closePath();
+        for (let j = 0; j < J; j++) ctx.lineTo(x0 + j * step, hi[j]);
+        for (let j = J - 1; j >= 0; j--) ctx.lineTo(x0 + j * step, lo[j]);
+        ctx.closePath();
         ctx.fillStyle = rgba(ACCENT, 0.06);
         ctx.fill();
 
+        ctx.strokeStyle = rgba(INK, 0.09);
         ctx.beginPath();
-        visible.forEach(([x, y], i) => (i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)));
-        ctx.strokeStyle = rgba(ACCENT, 0.55);
-        ctx.lineWidth = 2;
+        for (const row of rows) {
+          ctx.moveTo(x0, row[0]);
+          for (let j = 1; j < J; j++) ctx.lineTo(x0 + j * step, row[j]);
+        }
         ctx.stroke();
 
+        ctx.lineJoin = 'round';
+        ctx.strokeStyle = rgba(INK, 0.4);
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        for (let x = 0; x <= x0; x += 3) ctx.lineTo(x, hist(x));
+        ctx.lineTo(x0, y0);
+        ctx.stroke();
+
+        ctx.strokeStyle = rgba(ACCENT, 0.65);
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        for (let j = 0; j < J; j++) ctx.lineTo(x0 + j * step, proj(x0 + j * step, 0, 50, 0.25));
+        ctx.stroke();
+
+        ctx.fillStyle = rgba(INK, 0.6);
+        ctx.beginPath(); ctx.arc(x0, y0, 3, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+      }
+    },
+
+    spiral: {
+      draw(t) {
+        const years = 80, total = years * 12;
+        const cx = W * 0.72, cy = H * 0.55, R = Math.min(W * 0.26, H * 0.38), r0 = R * 0.2;
+        const DRAW = 18000, HOLD = 3000, FADE = 1500;
+        const ct = reduce ? DRAW : t % (DRAW + HOLD + FADE);
+        const months = Math.min(1, ct / DRAW) * total;
+        const anom = (m) => -0.35 + 1.75 * (m / total) ** 2.6 + 0.13 * noise1(m / 14) + 0.06 * noise1(m / 3 + 40);
+        const rad = (a) => r0 + ((a + 0.6) / 2.2) * (R - r0);
+        const pt = (m) => {
+          const a = (m / 12) * Math.PI * 2 - Math.PI / 2, r = rad(anom(m));
+          return [cx + r * Math.cos(a), cy + r * Math.sin(a)];
+        };
+        ctx.clearRect(0, 0, W, H);
+        // fade in, hold the finished spiral, fade out, then loop
+        ctx.globalAlpha = ct < 800 ? ct / 800 : Math.min(1, 1 - (ct - DRAW - HOLD) / FADE);
+
+        ctx.lineWidth = 1;
+        ctx.setLineDash([2, 4]);
+        [[0, INK, 0.14], [1, INK, 0.14], [1.5, ACCENT, 0.4]].forEach(([a, c, al]) => {
+          ctx.strokeStyle = rgba(c, al);
+          ctx.beginPath(); ctx.arc(cx, cy, rad(a), 0, Math.PI * 2); ctx.stroke();
+        });
+        ctx.setLineDash([]);
+
+        ctx.lineJoin = 'round';
+        for (let y = 0; y * 12 < months; y++) {
+          const f = y / (years - 1), m1 = Math.min(months, (y + 1) * 12);
+          // older years in faint ink, recent years shift toward the accent
+          const c = [20 + 174 * f ** 2, 20 + 80 * f ** 2, 19 + 44 * f ** 2].map(Math.round).join(',');
+          ctx.strokeStyle = rgba(c, 0.03 + 0.4 * f ** 2.2);
+          ctx.lineWidth = 1 + 0.5 * f;
+          ctx.beginPath();
+          for (let m = y * 12; m < m1; m += 0.25) ctx.lineTo(...pt(m));
+          ctx.lineTo(...pt(m1));
+          ctx.stroke();
+        }
+        const [tx, ty] = pt(months);
         ctx.fillStyle = rgba(ACCENT, 0.9);
-        ctx.beginPath(); ctx.arc(lx, ly, 3.5, 0, Math.PI * 2); ctx.fill();
-        return p === 1;
+        ctx.beginPath(); ctx.arc(tx, ty, 3.5, 0, Math.PI * 2); ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+    },
+
+    scatter: {
+      init() {
+        const rand = seeded(21), n = Math.round(Math.min(240, (W * H) / 6000));
+        state = {
+          pts: Array.from({ length: n }, () => {
+            const u = rand();
+            return {
+              tx: W * (0.08 + u * 0.88),
+              ty: H * (0.86 - u * 0.4) + (rand() + rand() + rand() - 1.5) * H * 0.08,
+              sx: rand() * W, sy: rand() * H,
+              delay: u * 1000 + rand() * 600, ph: rand() * 6.28, hi: rand() < 0.035
+            };
+          })
+        };
+      },
+      draw(t) {
+        const T = reduce ? 1e6 : t, tt = T * 0.0006;
+        const pos = state.pts.map((p) => {
+          const e = d3.easeCubicInOut(Math.min(1, Math.max(0, (T - p.delay) / 2200)));
+          return {
+            x: p.sx + (p.tx - p.sx) * e + 5 * Math.sin(tt + p.ph),
+            y: p.sy + (p.ty - p.sy) * e + 5 * Math.cos(tt * 0.8 + p.ph * 1.7),
+            e, hi: p.hi
+          };
+        });
+        const N = pos.length;
+        const mx = d3.mean(pos, (p) => p.x), my = d3.mean(pos, (p) => p.y);
+        let sxx = 0, sxy = 0;
+        for (const p of pos) { sxx += (p.x - mx) ** 2; sxy += (p.x - mx) * (p.y - my); }
+        const b = sxy / sxx, a = my - b * mx;
+        const sd = Math.sqrt(d3.sum(pos, (p) => (p.y - a - b * p.x) ** 2) / N);
+        // fit line only fades in once the dots have mostly settled
+        const la = Math.max(0, (d3.mean(pos, (p) => p.e) - 0.7) / 0.3);
+        const xL = W * 0.08, xR = xL + (W * 0.96 - xL) * la;
+
+        ctx.clearRect(0, 0, W, H);
+        ctx.strokeStyle = rgba(INK, 0.12);
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(xL, Math.round(H * 0.95) + 0.5); ctx.lineTo(W * 0.96, Math.round(H * 0.95) + 0.5); ctx.stroke();
+
+        if (la > 0) {
+          ctx.beginPath();
+          ctx.moveTo(xL, a + b * xL - sd * 0.6); ctx.lineTo(xR, a + b * xR - sd * 0.6);
+          ctx.lineTo(xR, a + b * xR + sd * 0.6); ctx.lineTo(xL, a + b * xL + sd * 0.6);
+          ctx.closePath();
+          ctx.fillStyle = rgba(ACCENT, 0.06 * la);
+          ctx.fill();
+        }
+
+        for (const p of pos) {
+          ctx.fillStyle = p.hi ? rgba(ACCENT, 0.3 + 0.55 * p.e) : rgba(INK, 0.08 + 0.14 * p.e);
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.hi ? 3.2 : 2.6, 0, Math.PI * 2); ctx.fill();
+        }
+
+        if (la > 0) {
+          ctx.strokeStyle = rgba(ACCENT, 0.6 * la);
+          ctx.lineWidth = 2;
+          ctx.beginPath(); ctx.moveTo(xL, a + b * xL); ctx.lineTo(xR, a + b * xR); ctx.stroke();
+        }
       }
     }
   };
@@ -256,7 +435,43 @@
 
   // random on every load; ?bg=<name> forces a specific one
   const names = Object.keys(modes);
-  const requested = new URLSearchParams(location.search).get('bg');
-  mode = names.includes(requested) ? requested : names[Math.floor(Math.random() * names.length)];
-  run();
+  const params = new URLSearchParams(location.search);
+  const requested = params.get('bg');
+  const cycle = document.querySelector('.bg-cycle');
+  let box = null;
+
+  function setMode(name) {
+    mode = name;
+    run();
+    if (cycle) cycle.querySelector('.bg-name').textContent = name;
+    if (box) box.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.textContent === name)));
+  }
+
+  setMode(names.includes(requested) ? requested : names[Math.floor(Math.random() * names.length)]);
+
+  if (cycle) {
+    cycle.hidden = false;
+    cycle.addEventListener('click', () => setMode(names[(names.indexOf(mode) + 1) % names.length]));
+  }
+
+  // Temporary picker: shown locally, or on the live site with ?preview
+  const preview = params.has('preview') || location.protocol === 'file:' || /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+  if (preview) {
+    box = document.createElement('div');
+    box.className = 'bg-picker';
+    box.innerHTML = '<span>Background preview</span>';
+    names.forEach((name) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.textContent = name;
+      btn.setAttribute('aria-pressed', String(name === mode));
+      btn.addEventListener('click', () => {
+        setMode(name);
+        params.set('bg', name);
+        try { history.replaceState(null, '', '?' + params); } catch (e) { /* file:// can refuse URL updates */ }
+      });
+      box.append(btn);
+    });
+    document.body.append(box);
+  }
 })();
